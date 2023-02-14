@@ -407,6 +407,107 @@ namespace GildedRoseTests
 
             // ASSERT
             Assert.Equal(50, Items[0].Quality);
-        }        
+        }
+
+        // Conjured items tests
+        [Fact]
+        public void ConjuredMinus4InsteadOf2()
+        {
+            // ARRANGE
+            IList<Item> Items = new List<Item>
+            {
+                new Item
+                {
+                    Name = "Conjured Mana Cake",
+                    SellIn = 20,
+                    Quality = 50
+                }
+            };
+            GildedRose sut = new GildedRose(Items);
+
+            // ACT
+            sut.UpdateQuality();
+            sut.UpdateQuality();
+
+            // ASSERT
+            Assert.Equal(46, Items[0].Quality);
+        }
+
+        [Fact]
+        public void ConjuredMinus8InsteadOf4()
+        {
+            // ARRANGE
+            IList<Item> Items = new List<Item>
+            {
+                new Item
+                {
+                    Name = "Conjured Mana Cake",
+                    SellIn = 0,
+                    Quality = 50
+                }
+            };
+            GildedRose sut = new GildedRose(Items);
+
+            // ACT
+            sut.UpdateQuality();
+            sut.UpdateQuality();
+
+            // ASSERT
+            Assert.Equal(42, Items[0].Quality);
+        }
+
+        [Fact]
+        public void ConjuredStoppedAt0()
+        {
+            // ARRANGE
+            IList<Item> Items = new List<Item>
+            {
+                new Item
+                {
+                    Name = "Conjured Mana Cake",
+                    SellIn = 0,
+                    Quality = 6
+                },
+                new Item
+                {
+                    Name = "Conjured Mana Cake",
+                    SellIn = 10,
+                    Quality = 3
+                }
+            };
+            GildedRose sut = new GildedRose(Items);
+
+            // ACT
+            sut.UpdateQuality();
+            sut.UpdateQuality();
+            sut.UpdateQuality();
+
+            // ASSERT
+            Assert.Equal(0, Items[0].Quality);
+            Assert.Equal(0, Items[1].Quality);
+        }
+
+        [Fact]
+        public void ConjuredShouldBe2()
+        {
+            // ARRANGE
+            IList<Item> Items = new List<Item>
+            {
+                new Item
+                {
+                    Name = "Conjured Mana Cake",
+                    SellIn = 1,
+                    Quality = 8
+                }
+            };
+            GildedRose sut = new GildedRose(Items);
+
+            // ACT
+            sut.UpdateQuality();
+            sut.UpdateQuality();
+
+            // ASSERT
+            Assert.Equal(2, Items[0].Quality);
+        }
     }
 }
