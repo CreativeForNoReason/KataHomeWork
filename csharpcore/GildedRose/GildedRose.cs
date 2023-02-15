@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GildedRoseKata
 {
@@ -12,77 +13,62 @@ namespace GildedRoseKata
 
         public void UpdateQuality()
         {
+            int qualityFactor = 1;
             for (var i = 0; i < Items.Count; i++)
             {
-                if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                {
-                    if (Items[i].Quality > 0)
-                    {
-                        if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                        {
-                            Items[i].Quality = Items[i].Quality - 1;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Items[i].Quality < 50)
-                    {
-                        Items[i].Quality = Items[i].Quality + 1;
+                qualityFactor = Items[i].SellIn <= 0
+                    ? qualityFactor * 2
+                    : qualityFactor;
 
-                        if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (Items[i].SellIn < 11)
-                            {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
-                            }
-
-                            if (Items[i].SellIn < 6)
-                            {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
-                            }
-                        }
-                    }
+                switch (Items[i].Name)
+                {
+                    case "Backstage passes to a TAFKAL80ETC concert":
+                        SolveForBackstage(Items[i]);
+                        break;
+                    case "Aged Brie":
+                        SolveForAgedBrie(Items[i], qualityFactor);
+                        break;
+                    case "Sulfuras, Hand of Ragnaros":
+                        continue;
+                    case "Conjured Mana Cake":
+                        SolveForOthers(Items[i], 2 * qualityFactor);
+                        break;
+                    default:
+                        SolveForOthers(Items[i], qualityFactor);
+                        break;
                 }
 
-                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                {
-                    Items[i].SellIn = Items[i].SellIn - 1;
-                }
+                Items[i].SellIn = Items[i].SellIn - 1;
+            }
+        }
 
-                if (Items[i].SellIn < 0)
-                {
-                    if (Items[i].Name != "Aged Brie")
-                    {
-                        if (Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (Items[i].Quality > 0)
-                            {
-                                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                                {
-                                    Items[i].Quality = Items[i].Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Items[i].Quality = Items[i].Quality - Items[i].Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (Items[i].Quality < 50)
-                        {
-                            Items[i].Quality = Items[i].Quality + 1;
-                        }
-                    }
-                }
+        private void SolveForOthers(Item item, int qualityFactor)
+        {
+            item.Quality = Math.Max(item.Quality - qualityFactor, 0);            
+        }
+
+        private void SolveForAgedBrie(Item item, int qualityFactor)
+        {
+            item.Quality = Math.Min(item.Quality + qualityFactor, 50);            
+        }
+
+        private void SolveForBackstage(Item item)
+        {
+            item.Quality = Math.Min(item.Quality + 1, 50);
+
+            if (item.SellIn < 11)
+            {
+                item.Quality = Math.Min(item.Quality + 1, 50);
+            }
+
+            if (item.SellIn < 6)
+            {
+                item.Quality = Math.Min(item.Quality + 1, 50);
+            }            
+
+            if (item.SellIn == 0)
+            {
+                item.Quality = 0;
             }
         }
     }
