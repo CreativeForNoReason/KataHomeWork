@@ -28,8 +28,9 @@ namespace GildedRoseTests
             Assert.Equal("foo", Items[0].Name);
         }
 
+        // tests for usual items
         [Fact]
-        public void SellinQualityMinus1()
+        public void Sellin_And_Quality_Should_DecreaseBy1()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -52,7 +53,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void SellinGoesNegativeMinus1()
+        public void Sellin_ShouldBe_Negative1()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -74,7 +75,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void QualityMinus2()
+        public void Quality_Should_LowerBy2()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -103,7 +104,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void QualityNeverNegative()
+        public void Quality_ShouldNot_BeNegative()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -132,7 +133,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void QualityStopsAt0()
+        public void Quality_Should_StopAt0()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -154,7 +155,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void QualityStopsAt0AfterFewCalls()
+        public void Quality_Should_StopAt0_After_FewCalls()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -178,7 +179,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void QualityDropDoublesAndStopsAt0()
+        public void Quality_Should_DecreaseBy2_And_StopAt0()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -203,7 +204,7 @@ namespace GildedRoseTests
 
         // Aged Brie tests
         [Fact]
-        public void QualityPlus1SellinMinus1()
+        public void Quality_Should_IncreaseBy1_And_Sellin_DecreaseBy1()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -226,7 +227,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void QualityDoublesAndStopsAt50()
+        public void Quality_Should_IncreaseBy2_And_StopAt50()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -235,12 +236,13 @@ namespace GildedRoseTests
                 {
                     Name = "Aged Brie",
                     SellIn = 0,
-                    Quality = 49
+                    Quality = 47
                 },
             };
             GildedRose sut = new GildedRose(Items);
 
             // ACT
+            sut.UpdateQuality();
             sut.UpdateQuality();
 
             // ASSERT
@@ -248,7 +250,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void QualityPlus2()
+        public void Quality_Should_IncreaseBy2()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -271,7 +273,7 @@ namespace GildedRoseTests
 
         // Sulfuras tests
         [Fact]
-        public void QualitySellinStaysSame()
+        public void Quality_And_Sellin_Should_Stay_Same()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -296,7 +298,7 @@ namespace GildedRoseTests
 
         // BackStage Passes tests
         [Fact]
-        public void BackQualityPlus1()
+        public void BackStage_Quality_Should_InreaseBy1()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -318,7 +320,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void BackQualityPlus2()
+        public void BackStage_Quality_Should_IncreaseBy2()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -342,7 +344,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void BackQualityPlus3()
+        public void BackStage_Quality_Should_IncreaseBy3()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -365,7 +367,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void BackQualityDropsTo0()
+        public void BackStage_Quality_Should_DecreaseTo0()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -387,7 +389,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void BackQualityNoMoreThan50()
+        public void BackStage_Quality_Should_StopAt50()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -411,7 +413,7 @@ namespace GildedRoseTests
 
         // Conjured items tests
         [Fact]
-        public void ConjuredMinus4InsteadOf2()
+        public void Conjured_Should_DecreaseBy2()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -427,14 +429,13 @@ namespace GildedRoseTests
 
             // ACT
             sut.UpdateQuality();
-            sut.UpdateQuality();
 
             // ASSERT
-            Assert.Equal(46, Items[0].Quality);
+            Assert.Equal(48, Items[0].Quality);
         }
 
         [Fact]
-        public void ConjuredMinus8InsteadOf4()
+        public void Conjured_Should_DecreaseBy4()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -450,14 +451,13 @@ namespace GildedRoseTests
 
             // ACT
             sut.UpdateQuality();
-            sut.UpdateQuality();
 
             // ASSERT
-            Assert.Equal(42, Items[0].Quality);
+            Assert.Equal(46, Items[0].Quality);
         }
 
         [Fact]
-        public void ConjuredStoppedAt0()
+        public void Conjured_Should_StopAt0()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
@@ -488,7 +488,7 @@ namespace GildedRoseTests
         }
 
         [Fact]
-        public void ConjuredShouldBe2()
+        public void Conjured_Should_Be2()
         {
             // ARRANGE
             IList<Item> Items = new List<Item>
